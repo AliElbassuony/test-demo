@@ -1,0 +1,29 @@
+- name: Configure Prometheus node exporter as systemd service
+  hosts: all
+  become: true
+  user: ubuntu
+
+  vars:
+    exec_start: "/usr/local/bin/node_exporter"
+    service_description: "Node Exporter"
+
+  tasks:
+    - name: download node exporter binary
+      get_url:
+        src:   https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+        dest: /tmp/node_exporter-1.8.2.linux-amd64.tar.gz
+
+
+    - name: copy prometheus node exporter unit file to all servers
+      template:
+        src: node_exporter.service.j2
+        dest: /ect/systemd/system/node_exporter.service
+
+    - name: reload unit files
+      command: systemctl daemon-reload
+
+    - name: start and enable node exporter
+      service:
+        name: node_exporter
+        state: started
+        enabled: true

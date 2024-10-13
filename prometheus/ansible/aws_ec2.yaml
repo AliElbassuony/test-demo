@@ -1,0 +1,12 @@
+plugin: amazon.aws.aws_ec2
+profile: default
+hostnames:
+  - ip-address
+
+  - name: 'private-ip-address'
+    separator: '_'
+    prefix: 'tag:Name'
+
+filters:
+  tag:layer:
+    - web
