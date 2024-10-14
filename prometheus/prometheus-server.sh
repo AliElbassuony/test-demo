@@ -16,6 +16,3 @@ echo \
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
   sudo usermod -aG docker ubuntu
   sudo groupmod -aU ubuntu docker
-  
-  touch prometheus.yml
-  docker run -p 9090:9090 -d -v ./prometheus.yml:/etc/prometheus/prometheus.yml -v prometheus-data:/prometheus prom/prometheus

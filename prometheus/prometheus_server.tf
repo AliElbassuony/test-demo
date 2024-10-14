@@ -13,6 +13,25 @@ resource "aws_instance" "prometheus_server" {
     }
 
     iam_instance_profile = aws_iam_instance_profile.prometheus_profile.id
+    
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      host = "${self.public_ip}"
+    }
+
+    provisioner "file" {
+      source = "prometheus.yml"
+      destination = "/home/ubuntu/prometheus.yml"
+    }
+
+    provisioner "remote-exec" {
+        inline = [ 
+          "sleep 60",
+          "sudo docker run -p 9090:9090 -d -v prometheus-data:/prometheus -v ./prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus",
+         ]
+    }
+
 }
 
 

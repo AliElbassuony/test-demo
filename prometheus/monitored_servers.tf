@@ -3,8 +3,7 @@ resource "aws_instance" "web_server" {
     ami = "ami-0ea3c35c5c3284d82"
     instance_type = "t2.micro"
     vpc_security_group_ids = [aws_security_group.web_server_sg.id]
-    user_data = "${file("node-exporter.sh")}"
-    
+    # user_data = "${file("node-exporter.sh")}"    
     
     key_name = aws_key_pair.pub_key.key_name
 
@@ -13,6 +12,10 @@ resource "aws_instance" "web_server" {
         monitored: "yes"
         layer: "web"
     }
+
+    provisioner "local-exec" {
+    command = "ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml"
+  }
 }
 
 resource "aws_security_group" "web_server_sg" {
