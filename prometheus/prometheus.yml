@@ -34,8 +34,8 @@ scrape_configs:
 
   - job_name: "aws_sd"
     ec2_sd_configs:
-    # - access_key: "AKIAVIOZFMYS6DZ54OHD"
-    #   secret_key: "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"
+    # - access_key: ""
+    #   secret_key: ""
     - region: us-east-2
       port: 9100
 
